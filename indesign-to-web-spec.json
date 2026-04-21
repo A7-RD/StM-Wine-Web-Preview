@@ -1,0 +1,915 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StM Wine List — InDesign → Web layout spec",
+  "generatedAt": "2026-04-20T18:05:00.000Z",
+  "source": {
+    "fileName": "StM_Winelist_4-23-2025.indd",
+    "filePath": "/Users/ashtonhenning/Dropbox/Assets/BMH/BMH Design/St Martins/Menus/Wine List",
+    "bridgeBuild": "agent-workflow-2026-03-25",
+    "extractionNotes": [
+      "Prefab MCP: get_document_info, get_document_colors, get_document_styles, get_document_preferences, get_document_layout_preferences, get_document_layers, get_page_info, list_page_items, get_runtime_diagnostics.",
+      "Custom UXP script (execute_indesign_code): spread map, per-page marginPreferences, named process colors with values, paragraph/character style typography, flat allPageItems summary per page (types + TextFrame skeleton).",
+      "MCP list_spreads is not implemented in this server build.",
+      "MCP get_master_spread_info(name: A-Parent) errored in-session; master details inferred from list_master_spreads + page.appliedMaster."
+    ]
+  },
+  "document": {
+    "pageSize": {
+      "width": 7,
+      "height": 8.5,
+      "unit": "in",
+      "orientation": "PORTRAIT",
+      "facingPages": true,
+      "pages": 16,
+    "spreads": 9,
+      "startPageNumber": 1
+    },
+    "bleed": {
+      "top": 0,
+      "bottom": 0,
+      "inside": 0,
+      "outside": 0,
+      "unit": "in"
+    },
+    "documentMargins": {
+      "top": 0.5,
+      "bottom": 0.5,
+      "left": 0.75,
+      "right": 0.625,
+      "unit": "in",
+      "note": "Default document setup from get_document_info; per-page marginPreferences from scripting matched these values on sampled pages."
+    },
+    "columns": {
+      "columnCount": 1,
+      "columnGutter": 0.16666666666666666,
+      "unit": "in"
+    },
+    "masterSpreads": [
+      {
+        "name": "A-Parent",
+        "index": 0,
+        "pagesOnMaster": 2,
+        "showMasterItems": true
+      }
+    ],
+    "layers": [
+      {
+        "name": "Layer 1",
+        "visible": true,
+        "locked": false,
+        "pageItemCount": 32
+      }
+    ]
+  },
+  "coordinateSystem": {
+    "geometricBoundsOrder": ["yTop", "xLeft", "yBottom", "xRight"],
+    "unit": "in",
+    "note": "Values align with 7×8.5 in page; treat as document ruler space for web you can map 1in = 96 CSS px or use absolute units (in/mm) consistently."
+  },
+  "spreads": [
+    {
+      "spreadIndex": 0,
+      "pages": [
+        {
+          "documentPageIndex": 0,
+          "name": "I",
+          "side": "RIGHT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "spreadIndex": 1,
+      "pages": [
+        {
+          "documentPageIndex": 1,
+          "name": "II",
+          "side": "LEFT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        },
+        {
+          "documentPageIndex": 2,
+          "name": "III",
+          "side": "RIGHT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "spreadIndex": 2,
+      "pages": [
+        {
+          "documentPageIndex": 3,
+          "name": "IV",
+          "side": "LEFT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        },
+        {
+          "documentPageIndex": 4,
+          "name": "V",
+          "side": "RIGHT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "spreadIndex": 3,
+      "pages": [
+        {
+          "documentPageIndex": 5,
+          "name": "VI",
+          "side": "LEFT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        },
+        {
+          "documentPageIndex": 6,
+          "name": "VII",
+          "side": "RIGHT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "spreadIndex": 4,
+      "pages": [
+        {
+          "documentPageIndex": 7,
+          "name": "VIII",
+          "side": "LEFT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        },
+        {
+          "documentPageIndex": 8,
+          "name": "IX",
+          "side": "RIGHT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "spreadIndex": 5,
+      "pages": [
+        {
+          "documentPageIndex": 9,
+          "name": "X",
+          "side": "LEFT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        },
+        {
+          "documentPageIndex": 10,
+          "name": "XI",
+          "side": "RIGHT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "spreadIndex": 6,
+      "pages": [
+        {
+          "documentPageIndex": 11,
+          "name": "XII",
+          "side": "LEFT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        },
+        {
+          "documentPageIndex": 12,
+          "name": "XIII",
+          "side": "RIGHT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "spreadIndex": 7,
+      "pages": [
+        {
+          "documentPageIndex": 13,
+          "name": "XIV",
+          "side": "LEFT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        },
+        {
+          "documentPageIndex": 14,
+          "name": "XV",
+          "side": "RIGHT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "spreadIndex": 8,
+      "pages": [
+        {
+          "documentPageIndex": 15,
+          "name": "XVI",
+          "side": "LEFT_HAND",
+          "margins": {
+            "top": 0.5,
+            "bottom": 0.5,
+            "left": 0.75,
+            "right": 0.625,
+            "columnCount": 1,
+            "columnGutter": 0.16666666666666666
+          }
+        }
+      ]
+    }
+  ],
+  "stylesCatalog": {
+    "paragraphStyleNames": [
+      "[No Paragraph Style]",
+      "[Basic Paragraph]",
+      "Item",
+      "Category",
+      "Bottles",
+      "Paragraph Style 1",
+      "Paragraph Style 2"
+    ],
+    "characterStyleNames": ["[None]", "Variety", "Item"],
+    "objectStyleNames": [
+      "[None]",
+      "[Basic Graphics Frame]",
+      "[Basic Text Frame]",
+      "[Basic Grid]"
+    ],
+    "tableStyleNames": ["[No Table Style]", "[Basic Table]"],
+    "cellStyleNames": ["[None]"]
+  },
+  "typography": {
+    "paragraphStyles": [
+      {
+        "name": "Item",
+        "basedOn": null,
+        "font": {
+          "family": "Xanh Mono",
+          "styleName": "Regular",
+          "postscriptName": "XanhMono-Regular"
+        },
+        "pointSize": 10,
+        "leading": "AUTO",
+        "leadingRaw": {},
+        "tracking": 0,
+        "horizontalScale": 100,
+        "verticalScale": 100,
+        "fillColorSwatch": "R=35 G=31 B=32",
+        "justification": "LEFT_ALIGN",
+        "hyphenation": true,
+        "keepFirstLines": 2,
+        "keepLastLines": 2
+      },
+      {
+        "name": "Category",
+        "basedOn": null,
+        "font": {
+          "family": "Xanh Mono",
+          "styleName": "Regular",
+          "postscriptName": "XanhMono-Regular"
+        },
+        "pointSize": 10,
+        "leading": "AUTO",
+        "leadingRaw": {},
+        "tracking": 0,
+        "fillColorSwatch": "R=35 G=31 B=32",
+        "justification": "LEFT_ALIGN",
+        "hyphenation": true
+      },
+      {
+        "name": "Bottles",
+        "basedOn": null,
+        "font": {
+          "family": "Xanh Mono",
+          "styleName": "Regular",
+          "postscriptName": "XanhMono-Regular"
+        },
+        "pointSize": 10,
+        "leading": "AUTO",
+        "leadingRaw": {},
+        "fillColorSwatch": "R=35 G=31 B=32",
+        "justification": "LEFT_ALIGN",
+        "hyphenation": true
+      },
+      {
+        "name": "Paragraph Style 1",
+        "basedOn": null,
+        "font": {
+          "family": "Galipos OL",
+          "styleName": "Regular",
+          "postscriptName": "GaliposItalic-Regular"
+        },
+        "pointSize": 30,
+        "leading": 24,
+        "tracking": 0,
+        "fillColorSwatch": "R=35 G=31 B=32",
+        "justification": "LEFT_ALIGN",
+        "hyphenation": false,
+        "note": "Likely display / section titling (large 30pt vs body 10pt)."
+      },
+      {
+        "name": "Paragraph Style 2",
+        "basedOn": "Item",
+        "font": {
+          "family": "Xanh Mono",
+          "styleName": "Regular",
+          "postscriptName": "XanhMono-Regular"
+        },
+        "pointSize": 10,
+        "leading": "AUTO",
+        "leadingRaw": {},
+        "fillColorSwatch": "R=35 G=31 B=32"
+      }
+    ],
+    "characterStyles": [
+      {
+        "name": "Variety",
+        "basedOn": null,
+        "capitalization": "ALL_CAPS",
+        "underline": true,
+        "note": "Most other fields inherit from paragraph style (InDesign shows NOTHING / empty objects for unset overrides)."
+      },
+      {
+        "name": "Item",
+        "basedOn": null,
+        "note": "Minimal overrides; pair with paragraph styles in markup."
+      }
+    ]
+  },
+  "colors": {
+    "namedProcessColors": [
+      {
+        "name": "Black",
+        "space": "CMYK",
+        "model": "PROCESS",
+        "colorValue": [0, 0, 0, 100]
+      },
+      {
+        "name": "Paper",
+        "space": "CMYK",
+        "model": "PROCESS",
+        "colorValue": [0, 0, 0, 0]
+      },
+      {
+        "name": "R=35 G=31 B=32",
+        "space": "RGB",
+        "model": "PROCESS",
+        "colorValue": [35, 31, 32],
+        "suggestedCss": "rgb(35, 31, 32)"
+      },
+      {
+        "name": "r35g31b32",
+        "space": "RGB",
+        "colorValue": [35.7, 30.6, 33.15],
+        "suggestedCss": "rgb(36, 31, 33)"
+      },
+      {
+        "name": "r0g0b0",
+        "space": "RGB",
+        "colorValue": [0, 0, 0],
+        "suggestedCss": "#000000"
+      },
+      {
+        "name": "r255g0b0",
+        "space": "RGB",
+        "colorValue": [255, 0, 0],
+        "suggestedCss": "#ff0000"
+      },
+      {
+        "name": "c72m69y64k89",
+        "space": "CMYK",
+        "colorValue": [72, 69, 64, 89]
+      },
+      {
+        "name": "c75m68y67k90",
+        "space": "CMYK",
+        "colorValue": [75, 68, 67, 90]
+      },
+      {
+        "name": "C=100 M=0 Y=0 K=0",
+        "space": "CMYK",
+        "colorValue": [100, 0, 0, 0]
+      },
+      {
+        "name": "C=0 M=100 Y=0 K=0",
+        "space": "CMYK",
+        "colorValue": [0, 100, 0, 0]
+      },
+      {
+        "name": "C=0 M=0 Y=100 K=0",
+        "space": "CMYK",
+        "colorValue": [0, 0, 100, 0]
+      },
+      {
+        "name": "C=15 M=100 Y=100 K=0",
+        "space": "CMYK",
+        "colorValue": [15, 100, 100, 0]
+      },
+      {
+        "name": "C=75 M=5 Y=100 K=0",
+        "space": "CMYK",
+        "colorValue": [75, 5, 100, 0]
+      },
+      {
+        "name": "C=100 M=90 Y=10 K=0",
+        "space": "CMYK",
+        "colorValue": [100, 90, 10, 0]
+      },
+      {
+        "name": "Cyan",
+        "space": "CMYK",
+        "model": "PROCESS",
+        "colorValue": [100, 0, 0, 0],
+        "warning": "Swatch name Cyan but values match 100M0Y0K in export; verify in Swatches panel."
+      },
+      {
+        "name": "Magenta",
+        "space": "CMYK",
+        "colorValue": [0, 100, 0, 0]
+      },
+      {
+        "name": "Yellow",
+        "space": "CMYK",
+        "colorValue": [0, 0, 100, 0]
+      },
+      {
+        "name": "Registration",
+        "space": "CMYK",
+        "model": "REGISTRATION",
+        "colorValue": [100, 100, 100, 100]
+      }
+    ],
+    "swatchNamesFromDocument": [
+      "None",
+      "Registration",
+      "Paper",
+      "Black",
+      "C=100 M=0 Y=0 K=0",
+      "C=0 M=100 Y=0 K=0",
+      "C=0 M=0 Y=100 K=0",
+      "C=15 M=100 Y=100 K=0",
+      "C=75 M=5 Y=100 K=0",
+      "C=100 M=90 Y=10 K=0",
+      "R=35 G=31 B=32",
+      "c72m69y64k89",
+      "c75m68y67k90",
+      "r35g31b32",
+      "r0g0b0",
+      "r255g0b0"
+    ],
+    "gradients": [""],
+    "tints": []
+  },
+  "textPreferences": {
+    "typographersQuotes": false,
+    "highlightSubstitutedFonts": true,
+    "highlightSubstitutedGlyphs": false
+  },
+  "pages": [
+    {
+      "index": 0,
+      "name": "I",
+      "side": "RIGHT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 0, 8.5, 7],
+      "allPageItemCount": 21,
+      "itemTypeCounts": { "Group": 1, "Polygon": 17, "Rectangle": 3 },
+      "textFrames": [],
+      "note": "Cover-style artwork: vectors only on this page in flat hierarchy; no live TextFrames at page level."
+    },
+    {
+      "index": 1,
+      "name": "II",
+      "side": "LEFT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 0, 8.5, 7],
+      "allPageItemCount": 5,
+      "itemTypeCounts": { "TextFrame": 5 },
+      "textFrames": [
+        {
+          "id": 3716,
+          "geometricBounds": [7.096666666666668, 3.125, 7.564944456495315, 6.25],
+          "appliedParagraphStyle": "Item",
+          "appliedObjectStyle": "[None]",
+          "preview": "Half Ounce $125  One Ounce $250  Two Ounces $500"
+        },
+        {
+          "id": 3666,
+          "geometricBounds": [7.107555555555553, 0.625, 7.420055555555553, 2.6216666666666666],
+          "appliedParagraphStyle": "Paragraph Style 1",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "Louis XIII"
+        },
+        {
+          "id": 3517,
+          "geometricBounds": [0.5, 0.625, 5.1458335055245294, 6.25],
+          "appliedParagraphStyle": "Paragraph Style 1",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "St. Martin’s Classics …"
+        },
+        {
+          "id": 4036,
+          "geometricBounds": [5.159722394413418, 3.6149999999999998, 6.989722394413418, 6.249999999999999],
+          "appliedParagraphStyle": "Item",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "Apertif …"
+        },
+        {
+          "id": 4013,
+          "geometricBounds": [5.159722394413421, 0.625, 6.805555780728661, 3.26],
+          "appliedParagraphStyle": "Paragraph Style 1",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "Beer …"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "name": "III",
+      "side": "RIGHT_HAND",
+      "appliedMaster": "None",
+      "boundsFromMcp": [0, 7, 8.5, 14],
+      "allPageItemCount": 101,
+      "itemTypeCounts": { "Group": 3, "EPSText": 5, "Polygon": 92, "TextFrame": 1 },
+      "textFrames": [
+        {
+          "id": 5889,
+          "geometricBounds": [0.5, 7.75, 0.9680536190668741, 9.63],
+          "appliedParagraphStyle": "Item",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "Please note that vintages are subject to change based on availability."
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "name": "IV",
+      "side": "LEFT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 0, 8.5, 7],
+      "allPageItemCount": 1,
+      "itemTypeCounts": { "TextFrame": 1 },
+      "textFrames": [
+        {
+          "id": 3179,
+          "geometricBounds": [0.5, 0.625, 6.979166898462507, 6.25],
+          "appliedParagraphStyle": "Paragraph Style 1",
+          "appliedObjectStyle": "[None]",
+          "preview": "Champagne & Sparkling Wines …"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "name": "V",
+      "side": "RIGHT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 7, 8.5, 14],
+      "allPageItemCount": 1,
+      "itemTypeCounts": { "TextFrame": 1 },
+      "textFrames": [
+        {
+          "id": 3202,
+          "geometricBounds": [0.49711111111110995, 7.75, 7.529999999999998, 13.375000000000002],
+          "appliedParagraphStyle": "Bottles",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "White Wines & Rosé …"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "name": "VI",
+      "side": "LEFT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 0, 8.5, 7],
+      "allPageItemCount": 1,
+      "itemTypeCounts": { "TextFrame": 1 },
+      "textFrames": [
+        {
+          "id": 3165,
+          "geometricBounds": [0.5, 0.625, 7.550000000000005, 6.25],
+          "appliedParagraphStyle": "Paragraph Style 1",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "Red Wines …"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "name": "VII",
+      "side": "RIGHT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 7, 8.5, 14],
+      "allPageItemCount": 2,
+      "itemTypeCounts": { "TextFrame": 2 },
+      "textFrames": [
+        {
+          "id": 5747,
+          "geometricBounds": [7.875, 10.100000000000001, 8.009720272488064, 10.875],
+          "appliedParagraphStyle": null,
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": ""
+        },
+        {
+          "id": 3392,
+          "geometricBounds": [0.5, 7.75, 7.375, 13.375],
+          "appliedParagraphStyle": "Paragraph Style 1",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "Red Wines …"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "name": "VIII",
+      "side": "LEFT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 0, 8.5, 7],
+      "allPageItemCount": 1,
+      "itemTypeCounts": { "TextFrame": 1 },
+      "textFrames": [
+        {
+          "id": 3396,
+          "geometricBounds": [0.5, 0.625, 7.709999999999998, 6.250000000000002],
+          "appliedParagraphStyle": "Category",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "Red Wines …"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "name": "IX",
+      "side": "RIGHT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 7, 8.5, 14],
+      "allPageItemCount": 1,
+      "itemTypeCounts": { "TextFrame": 1 },
+      "textFrames": [
+        {
+          "id": 3400,
+          "geometricBounds": [0.5, 7.75, 7.645833578374651, 13.375],
+          "appliedParagraphStyle": "Bottles",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "Red Wines …"
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "name": "X",
+      "side": "LEFT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 0, 8.5, 7],
+      "allPageItemCount": 87,
+      "itemTypeCounts": { "Group": 1, "Polygon": 81, "EPSText": 4, "TextFrame": 1 },
+      "textFrames": [
+        {
+          "id": 2238,
+          "geometricBounds": [5.666666666666667, 0.7638888888888888, 7.312500052981907, 6.388888888888889],
+          "appliedParagraphStyle": "Paragraph Style 1",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "Sparkling By The Glass …"
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "name": "XI",
+      "side": "RIGHT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 7, 8.5, 14],
+      "allPageItemCount": 1,
+      "itemTypeCounts": { "TextFrame": 1 },
+      "textFrames": [
+        {
+          "id": 3441,
+          "geometricBounds": [0.5, 7.75, 8.419999999999996, 13.375],
+          "appliedParagraphStyle": "Paragraph Style 1",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "White By The Glass …"
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "name": "XII",
+      "side": "LEFT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 0, 8.5, 7],
+      "allPageItemCount": 1,
+      "itemTypeCounts": { "TextFrame": 1 },
+      "textFrames": [
+        {
+          "id": 6050,
+          "geometricBounds": [0.5, 0.625, 7.549999999999993, 6.25],
+          "appliedParagraphStyle": "Paragraph Style 1",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "Spirits List …"
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "name": "XIII",
+      "side": "RIGHT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 7, 8.5, 14],
+      "allPageItemCount": 1,
+      "itemTypeCounts": { "TextFrame": 1 },
+      "textFrames": [
+        {
+          "id": 6255,
+          "geometricBounds": [0.5, 7.75, 7.549999999999993, 13.375],
+          "appliedParagraphStyle": "Item",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "Scotch …"
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "name": "XIV",
+      "side": "LEFT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 0, 8.5, 7],
+      "allPageItemCount": 1,
+      "itemTypeCounts": { "TextFrame": 1 },
+      "textFrames": [
+        {
+          "id": 7280,
+          "geometricBounds": [0.5, 0.625, 6.75, 6.25],
+          "appliedParagraphStyle": "Paragraph Style 1",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "Spirits List …"
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "name": "XV",
+      "side": "RIGHT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 7, 8.5, 14],
+      "allPageItemCount": 192,
+      "itemTypeCounts": { "Group": 2, "Polygon": 184, "EPSText": 4, "TextFrame": 2 },
+      "textFrames": [
+        {
+          "id": 7929,
+          "geometricBounds": [7.138888888888889, 7.75, 7.451388888888889, 13.375],
+          "appliedParagraphStyle": "Paragraph Style 1",
+          "appliedObjectStyle": "[None]",
+          "preview": "7 Nights a Week"
+        },
+        {
+          "id": 7793,
+          "geometricBounds": [2.29833333333334, 7.749999999999998, 4.474720312224501, 13.375],
+          "appliedParagraphStyle": "Item",
+          "appliedObjectStyle": "[Basic Text Frame]",
+          "preview": "SUNDAY-MONDAY Alexis Lugo …"
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "name": "XVI",
+      "side": "LEFT_HAND",
+      "appliedMaster": "A-Parent",
+      "boundsFromMcp": [0, 0, 8.5, 7],
+      "allPageItemCount": 0,
+      "itemTypeCounts": {},
+      "textFrames": [],
+      "note": "Blank back / end sheet in current layout."
+    }
+  ],
+  "webImplementationHints": {
+    "fontsToSource": [
+      { "role": "body.mono", "postscriptName": "XanhMono-Regular", "family": "Xanh Mono" },
+      {
+        "role": "display.section",
+        "postscriptName": "GaliposItalic-Regular",
+        "family": "Galipos OL"
+      }
+    ],
+    "cssRoughScale": {
+      "pageWidth": "7in",
+      "pageHeight": "8.5in",
+      "orPxAt96dpi": { "width": 672, "height": 816 }
+    },
+    "semanticStyleMap": {
+      "Paragraph Style 1": "sectionTitleOrLead",
+      "Item": "bodyRowOrMeta",
+      "Bottles": "wineListingBody",
+      "Category": "subsectionHeading",
+      "Paragraph Style 2": "bodyDerivedFromItem"
+    },
+    "facingLayout": {
+      "pattern": "Spread 0 is single right page I; spreads 1–7 are pairs; spread 8 is single left page XVI.",
+      "mcpPageBoundsNote": "get_page_info.bounds uses spread coordinates: y 0–8.5, x 0–7 for recto and x 7–14 for verso pages on a pair."
+    }
+  }
+}

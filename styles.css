@@ -60,7 +60,11 @@
 
   /* A single knob: changing --page-w rescales the whole layout. */
 
-  --page-w: 680px;
+  /* Fit-to-viewport by default so a full 2-page spread is always visible. */
+
+  /* 48px leaves room for drop shadows on either side of the spread. */
+
+  --page-w: min(680px, calc((100vw - 48px) / 2));
 
   --page-h: calc(var(--page-w) * 8.5 / 7);
 
@@ -80,11 +84,13 @@
 
   --paper: #fcfbf7;
 
-  --margin-h: calc(45 * var(--pt));
+  --margin-inside: calc(54 * var(--pt));
 
-  --margin-t: calc(40 * var(--pt));
+  --margin-outside: calc(45 * var(--pt));
 
-  --margin-b: calc(45 * var(--pt));
+  --margin-t: calc(36 * var(--pt));
+
+  --margin-b: calc(36 * var(--pt));
 
 }
 
@@ -130,6 +136,32 @@ html, body {
 
 
 
+/* ---------- Spread (facing pages) ---------- */
+
+.spread {
+
+  display: flex;
+
+  gap: 0;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.25);
+
+}
+
+.spread .page { box-shadow: none; }
+
+/* Single-page spread keeps page width and drops shadow duplication */
+
+.spread.single { box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.25); }
+
+.spread.single.right { align-self: center; }
+
+/* Subtle gutter separation */
+
+.spread:not(.single) .page + .page { border-left: 1px solid rgba(0,0,0,0.06); }
+
+
+
 /* ---------- Page container (7:8.5) ---------- */
 
 .page {
@@ -146,15 +178,29 @@ html, body {
 
   box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.25);
 
-  padding: var(--margin-t) var(--margin-h) var(--margin-b);
+  /* Default = right-hand page (inside on left, outside on right) */
+
+  padding: var(--margin-t) var(--margin-outside) var(--margin-b) var(--margin-inside);
 
   overflow: hidden;
 
   font-size: calc(10 * var(--pt));
 
-  line-height: 1.32;
+  line-height: 1.2;
 
   color: var(--ink);
+
+}
+
+
+
+/* Left-hand page: mirror margins (outside on left, inside on right) */
+
+.spread:not(.single) > .page:first-child {
+
+  padding-left: var(--margin-outside);
+
+  padding-right: var(--margin-inside);
 
 }
 
@@ -200,7 +246,7 @@ html, body {
 
   /* Section headers can bleed past the column edge — don't over-constrain */
 
-  margin: 0 0 calc(14 * var(--pt));
+  margin: 0 0 calc(8 * var(--pt));
 
   /* Slight optical overhang to the left of the content column */
 
@@ -214,17 +260,17 @@ html, body {
 
   font-family: var(--f-mono);
 
-  font-variant-caps: all-small-caps;
-
-  font-feature-settings: "smcp", "c2sc";
+  text-transform: uppercase;
 
   text-decoration: underline;
 
   text-underline-offset: 0.18em;
 
+  text-decoration-thickness: 1px;
+
   font-size: calc(10 * var(--pt));
 
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
 
   margin: calc(10 * var(--pt)) 0 calc(6 * var(--pt));
 
@@ -764,6 +810,312 @@ html, body {
 
 
 
+/* ---------- Cocktail list (page II) ---------- */
+
+.cocktail-list { margin: calc(6 * var(--pt)) 0 0; }
+
+.cocktail {
+
+  margin-bottom: calc(10 * var(--pt));
+
+}
+
+.cocktail .row {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: baseline;
+
+  gap: calc(8 * var(--pt));
+
+}
+
+.cocktail .name {
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.04em;
+
+}
+
+.cocktail .price {
+
+  font-variant-numeric: tabular-nums;
+
+}
+
+.cocktail .ing {
+
+  margin-top: calc(1 * var(--pt));
+
+  line-height: 1.3;
+
+}
+
+
+
+/* Page II structure */
+
+.page-classics .classics-head { margin-bottom: calc(6 * var(--pt)); }
+
+.page-classics .beer-aperitif {
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: calc(22 * var(--pt));
+
+  margin-top: calc(18 * var(--pt));
+
+}
+
+.page-classics .beer-aperitif .section-h { margin-bottom: calc(6 * var(--pt)); }
+
+.page-classics .louis-row .tiers .v { font-variant-numeric: tabular-nums; }
+
+
+
+/* ---------- Bottle list (pages IV, V) ---------- */
+
+.bottle-list {
+
+  list-style: none;
+
+  padding: 0;
+
+  margin: 0;
+
+}
+
+.bottle-list li {
+
+  display: grid;
+
+  grid-template-columns: calc(18 * var(--pt)) 1fr auto;
+
+  column-gap: calc(6 * var(--pt));
+
+  align-items: baseline;
+
+  padding: 0;
+
+}
+
+.bottle-list .num {
+
+  text-align: left;
+
+  font-variant-numeric: tabular-nums;
+
+  padding-left: calc(2 * var(--pt));
+
+}
+
+.bottle-list .price {
+
+  font-variant-numeric: tabular-nums;
+
+  white-space: nowrap;
+
+}
+
+.bottle-list .sub {
+
+  /* Override row grid: anonymous text was confined to the narrow num column. */
+
+  display: block;
+
+  padding-left: calc(18 * var(--pt) + 6 * var(--pt));
+
+  margin: calc(6 * var(--pt)) 0 calc(2 * var(--pt));
+
+  text-transform: uppercase;
+
+  letter-spacing: 0;
+
+  font-size: calc(10 * var(--pt));
+
+  text-decoration: underline;
+
+  text-underline-offset: 0.18em;
+
+  text-decoration-thickness: 1px;
+
+}
+
+.bottle-list .sub:first-child { margin-top: 0; }
+
+
+
+/* ---------- Spirits two-column flow (pages XII–XIV) ---------- */
+
+.spirits-flow {
+
+  column-count: 2;
+
+  column-gap: calc(34 * var(--pt));
+
+  column-fill: auto;
+
+  height: calc(var(--page-h) - var(--margin-t) - var(--margin-b) - calc(56 * var(--pt)));
+
+}
+
+.spirits-flow .subsection {
+
+  break-after: avoid;
+
+  break-inside: avoid;
+
+  margin: calc(14 * var(--pt)) 0 calc(4 * var(--pt));
+
+}
+
+.spirits-flow > .subsection:first-child { margin-top: 0; }
+
+.spirits-flow .wine-list { margin: 0; }
+
+.spirits-flow .wine-list li { break-inside: avoid; padding: calc(0.6 * var(--pt)) 0; }
+
+.spirits-flow .wine-list li .name { padding-right: calc(6 * var(--pt)); }
+
+/* Page XIII has no top section-h — flow should use the full content box */
+
+.page-spirits-cont .spirits-flow {
+
+  height: calc(var(--page-h) - var(--margin-t) - var(--margin-b));
+
+}
+
+
+
+/* ---------- Page X / XI (By the Glass) ---------- */
+
+.page-glass {
+
+  display: grid;
+
+  grid-template-rows: auto 1fr auto auto;
+
+  row-gap: calc(4 * var(--pt));
+
+}
+
+.page-glass .art {
+
+  display: grid;
+
+  place-items: center;
+
+  margin: calc(6 * var(--pt)) 0;
+
+}
+
+.page-glass .art img { width: calc(300 * var(--pt)); height: auto; }
+
+.page-glass .divider-word { justify-content: flex-start; }
+
+
+
+/* ---------- Page XI (all-glass listings) ---------- */
+
+.page-glass-list .section-h { margin-bottom: calc(6 * var(--pt)); }
+
+.page-glass-list .section-h + .wine-list { margin-bottom: calc(14 * var(--pt)); }
+
+.page-glass-list .non-alc {
+
+  text-align: center;
+
+  margin-top: calc(20 * var(--pt));
+
+}
+
+.page-glass-list .non-alc .mark {
+
+  text-decoration: underline;
+
+  text-underline-offset: 0.18em;
+
+  font-style: italic;
+
+}
+
+
+
+/* ---------- Page IX footer note ---------- */
+
+.non-alc-footer {
+
+  text-align: center;
+
+  margin-top: calc(18 * var(--pt));
+
+  font-style: italic;
+
+}
+
+.non-alc-footer .mark {
+
+  text-decoration: underline;
+
+  text-underline-offset: 0.18em;
+
+}
+
+
+
+/* ---------- Page III (By the Bottle divider) ---------- */
+
+.page-divider {
+
+  display: grid;
+
+  grid-template-rows: auto 1fr auto;
+
+  row-gap: calc(10 * var(--pt));
+
+}
+
+.page-divider .top-note {
+
+  max-width: calc(150 * var(--pt));
+
+  font-style: italic;
+
+  line-height: 1.3;
+
+}
+
+.page-divider .art {
+
+  display: grid;
+
+  place-items: center;
+
+}
+
+.page-divider .art img {
+
+  width: calc(260 * var(--pt));
+
+  height: auto;
+
+}
+
+.page-divider .divider-word {
+
+  justify-content: flex-start;
+
+  padding-bottom: calc(16 * var(--pt));
+
+}
+
+
+
 /* ---------- Navigation ---------- */
 
 .top-note-bar {
@@ -785,6 +1137,92 @@ html, body {
   opacity: 0.75;
 
   pointer-events: none;
+
+}
+
+
+
+/* ---------- Zoom toggle (fit / actual size) ---------- */
+
+/* Actual-size override: opt back into the literal 680px page width. */
+
+:root[data-zoom="actual"] {
+
+  --page-w: 680px;
+
+}
+
+
+
+.zoom-toggle {
+
+  position: fixed;
+
+  top: 12px;
+
+  left: 16px;
+
+  z-index: 11;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 8px 12px;
+
+  background: rgba(20, 18, 16, 0.72);
+
+  color: #eee;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 8px;
+
+  font-family: var(--f-mono);
+
+  font-size: 12px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(6px);
+
+  -webkit-backdrop-filter: blur(6px);
+
+  opacity: 0.8;
+
+  transition: opacity 120ms ease, background 120ms ease;
+
+}
+
+.zoom-toggle:hover {
+
+  opacity: 1;
+
+  background: rgba(20, 18, 16, 0.88);
+
+}
+
+.zoom-toggle:focus-visible {
+
+  outline: 2px solid #9ab;
+
+  outline-offset: 2px;
+
+}
+
+.zoom-toggle .zoom-toggle__label {
+
+  opacity: 0.65;
+
+}
+
+.zoom-toggle .zoom-toggle__value {
+
+  font-weight: 500;
 
 }
 
