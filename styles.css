@@ -1,343 +1,790 @@
-/* St. Martin's Wine List — Web Preview
-   Fidelity-first recreation of InDesign PDF export. */
+/* =============================================================
 
-/* ---------- Fonts ---------- */
+   St. Martin's Wine List — Web Preview
+
+   Fidelity-first recreation of InDesign 16-page layout
+
+   ============================================================= */
+
+
+
 @font-face {
-  font-family: "Xanh Mono";
-  src: url("Fonts/XanhMono-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: block;
-}
-@font-face {
-  font-family: "Xanh Mono";
-  src: url("Fonts/XanhMono-Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: block;
-}
-@font-face {
+
   font-family: "Galipos";
+
+  font-style: italic;
+
+  font-weight: 400;
+
+  font-display: swap;
+
   src: url("Fonts/Galipos-Italic-btqdej.otf") format("opentype");
+
+}
+
+
+
+@font-face {
+
+  font-family: "Xanh Mono Local";
+
+  font-style: normal;
+
   font-weight: 400;
+
+  font-display: swap;
+
+  src: url("Fonts/XanhMono-Regular.ttf") format("truetype");
+
+}
+
+
+
+@font-face {
+
+  font-family: "Xanh Mono Local";
+
   font-style: italic;
-  font-display: block;
+
+  font-weight: 400;
+
+  font-display: swap;
+
+  src: url("Fonts/XanhMono-Italic.ttf") format("truetype");
+
 }
 
-/* ---------- Reset ---------- */
-*, *::before, *::after { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
-  background: #8a8a8a;
-  font-family: "Xanh Mono", "Courier New", monospace;
-  color: #111;
-  min-height: 100vh;
-  padding: 48px 0;
-}
-ul, ol { list-style: none; margin: 0; padding: 0; }
 
-/* ---------- Page container ---------- */
-/* Page is 504 x 612 pt (7 x 8.5"). We scale the entire page by using
-   pt-based sizes inside a fixed-pt container, so every typographic size
-   in the spec (10pt, 30pt, 58.7pt, 118pt) renders at its exact PDF value. */
-.page-stack {
+
+:root {
+
+  /* A single knob: changing --page-w rescales the whole layout. */
+
+  --page-w: 680px;
+
+  --page-h: calc(var(--page-w) * 8.5 / 7);
+
+  /* One PDF point mapped to CSS px based on 504pt page width */
+
+  --pt: calc(var(--page-w) / 504);
+
+
+
+  --f-mono: "Xanh Mono", "Xanh Mono Local", ui-monospace, monospace;
+
+  --f-display: "Galipos", "Cormorant Garamond", "Playfair Display", serif;
+
+
+
+  --ink: #111;
+
+  --paper: #fcfbf7;
+
+  --margin-h: calc(45 * var(--pt));
+
+  --margin-t: calc(40 * var(--pt));
+
+  --margin-b: calc(45 * var(--pt));
+
+}
+
+
+
+* { box-sizing: border-box; }
+
+
+
+html, body {
+
+  margin: 0;
+
+  padding: 0;
+
+  background: #3a3732;
+
+  color: var(--ink);
+
+  font-family: var(--f-mono);
+
+  -webkit-font-smoothing: antialiased;
+
+  text-rendering: geometricPrecision;
+
+}
+
+
+
+.preview {
+
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
-  gap: 40px;
+
+  padding: 48px 0 96px;
+
+  gap: 48px;
+
 }
+
+
+
+/* ---------- Page container (7:8.5) ---------- */
+
 .page {
-  width: 504pt;
-  height: 612pt;
-  background: #ffffff;
+
   position: relative;
-  box-shadow: 0 10pt 30pt rgba(0,0,0,0.25);
+
+  width: var(--page-w);
+
+  height: var(--page-h);
+
+  aspect-ratio: 7 / 8.5;
+
+  background: var(--paper);
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 2px 6px rgba(0,0,0,0.25);
+
+  padding: var(--margin-t) var(--margin-h) var(--margin-b);
+
   overflow: hidden;
-  font-family: "Xanh Mono", "Courier New", monospace;
-  font-size: 10pt;
-  line-height: 1.35;
-  color: #111;
+
+  font-size: calc(10 * var(--pt));
+
+  line-height: 1.32;
+
+  color: var(--ink);
+
 }
-.page__content {
+
+
+
+.page .folio {
+
   position: absolute;
-  left: 45pt;
-  right: 45pt;
-  top: 40pt;
-  bottom: 45pt;
-}
-.page__num {
-  position: absolute;
+
   left: 0;
+
   right: 0;
-  bottom: 22pt;
+
+  bottom: calc(22 * var(--pt));
+
   text-align: center;
-  font-size: 10pt;
-  font-family: "Xanh Mono", monospace;
+
+  font-family: var(--f-mono);
+
+  font-size: calc(10 * var(--pt));
+
+  letter-spacing: 0.02em;
+
 }
 
-/* ---------- Typographic primitives ---------- */
 
-/* Section header — 30pt Galipos Italic, top-left, allowed to bleed past edge */
-.h-section {
-  font-family: "Galipos", "Playfair Display", serif;
+
+/* ---------- Typography primitives ---------- */
+
+.section-h {
+
+  font-family: var(--f-display);
+
   font-style: italic;
+
   font-weight: 400;
-  font-size: 30pt;
+
+  font-size: calc(30 * var(--pt));
+
   line-height: 1;
-  margin: 0 0 14pt -3pt; /* tiny negative indent lets it bleed slightly */
-  white-space: nowrap;
+
+  letter-spacing: 0.005em;
+
+  /* Section headers can bleed past the column edge — don't over-constrain */
+
+  margin: 0 0 calc(14 * var(--pt));
+
+  /* Slight optical overhang to the left of the content column */
+
+  margin-left: calc(-4 * var(--pt));
+
 }
 
-/* Subsection label — 10pt Xanh Mono, real small caps, underlined */
-.h-sub {
-  font-family: "Xanh Mono", monospace;
-  font-size: 10pt;
-  font-feature-settings: "smcp" 1;
+
+
+.subsection {
+
+  font-family: var(--f-mono);
+
+  font-variant-caps: all-small-caps;
+
+  font-feature-settings: "smcp", "c2sc";
+
   text-decoration: underline;
-  text-underline-offset: 2pt;
-  margin: 14pt 0 4pt 0;
-  font-variant-caps: all-small-caps;
-}
-.h-sub:first-child { margin-top: 0; }
 
-/* Small-caps inline (no underline) — for cocktail names */
-.smcp {
-  font-feature-settings: "smcp" 1;
-  font-variant-caps: all-small-caps;
+  text-underline-offset: 0.18em;
+
+  font-size: calc(10 * var(--pt));
+
+  letter-spacing: 0.04em;
+
+  margin: calc(10 * var(--pt)) 0 calc(6 * var(--pt));
+
 }
 
-/* List row: flush-left name, flush-right price, whitespace span */
-.row {
+
+
+.note-italic {
+
+  font-family: var(--f-mono);
+
+  font-style: italic;
+
+  font-size: calc(10 * var(--pt));
+
+  line-height: 1.3;
+
+}
+
+
+
+/* ---------- Wine list rows ---------- */
+
+.wine-list {
+
+  list-style: none;
+
+  padding: 0;
+
+  margin: 0;
+
+}
+
+
+
+.wine-list li {
+
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 20pt;
-}
-.row__name { flex: 1 1 auto; min-width: 0; }
-.row__price { flex: 0 0 auto; white-space: nowrap; }
 
-/* Numbered wine list */
-.numlist { counter-reset: wine; }
-.numlist .row {
-  padding-left: 22pt;
-  position: relative;
+  align-items: baseline;
+
+  gap: calc(6 * var(--pt));
+
+  padding: calc(1.2 * var(--pt)) 0;
+
 }
-.numlist .row::before {
-  content: attr(data-n);
-  position: absolute;
-  left: 0;
-  width: 18pt;
+
+
+
+.wine-list .num {
+
+  flex: 0 0 calc(18 * var(--pt));
+
   text-align: left;
+
+  font-variant-numeric: tabular-nums;
+
 }
 
-/* ---------- Split-word divider (118pt / 58.7pt) ---------- */
-.splitword {
-  display: inline-flex;
-  align-items: baseline;
-  font-family: "Xanh Mono", monospace;
-  font-size: 58.7pt;
-  line-height: 1;
+
+
+.wine-list .name {
+
+  flex: 1 1 auto;
+
+  padding-right: calc(8 * var(--pt));
+
+}
+
+
+
+.wine-list .price {
+
+  flex: 0 0 auto;
+
+  font-variant-numeric: tabular-nums;
+
   white-space: nowrap;
-}
-.splitword__drop {
-  font-family: "Galipos", serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 118pt;
-  line-height: 1;
-  /* Initial shares baseline; a tiny optical tuck keeps the glyph from
-     introducing extra side-bearing next to the monospace tail. */
-  margin-right: -6pt;
-}
-/* When the pre-text ("BY THE ") sits to the left of the drop-initial,
-   the Galipos italic's left side-bearing creates a visual gap. A small
-   negative tuck balances it. */
-.splitword__pre + .splitword__drop { margin-left: -4pt; }
 
-.splitword--bigger {
-  /* "7 Nights a Week" - single-font Galipos at the same 30pt scale,
-     centered. Kept here for clarity next to the other display rules. */
 }
 
-/* ---------- Page-specific helpers ---------- */
 
-/* Page III / X centering of the split-word + anchor */
-.divider {
-  height: 100%;
-  position: relative;
-}
-.divider__note {
-  font-style: italic;
-  font-size: 10pt;
-  line-height: 1.35;
-  position: absolute;
-  top: 0;
-  left: 0;
-  max-width: 160pt;
-}
-.divider__art {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 300pt;
-  height: auto;
-}
-.divider__word {
-  position: absolute;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-.divider__word--bottom { bottom: 0; }
-.divider__word--top { top: 0; }
 
-/* ---------- Page I — Cover ---------- */
-.cover {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-.cover__ripple {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-.cover__ripple::before {
-  content: "";
-  width: 70%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  /* concentric rings via repeating radial gradient */
-  background: repeating-radial-gradient(circle,
-    transparent 0,
-    transparent 10pt,
-    rgba(0,0,0,0.35) 10pt,
-    rgba(0,0,0,0.35) 10.5pt);
-  opacity: 0.35;
-}
-.cover__mark {
-  position: relative;
-  width: 60%;
-  max-width: 280pt;
-}
+/* Unnumbered variant: no gutter */
 
-/* ---------- Page II layout ---------- */
-.classics-list .row { margin-bottom: 4pt; }
-.classics-list .ingredients {
-  display: block;
-  padding-left: 0;
-  margin-bottom: 8pt;
-  font-size: 10pt;
-}
-.classics-list .row__name.smcp { letter-spacing: 0.02em; }
+.wine-list.plain .num { display: none; }
+
+
+
+/* ---------- Two-column flowing list ---------- */
 
 .two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24pt;
-}
-.beer-aperitif .h-section { font-size: 30pt; margin-bottom: 8pt; }
-.beer-aperitif .row { margin-bottom: 1pt; }
 
-.louis {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20pt;
-  align-items: end;
-}
-.louis__prices {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  column-gap: 12pt;
-  row-gap: 2pt;
-  align-items: end;
-  padding-bottom: 6pt;
-}
-.louis__prices .label { font-size: 10pt; }
-.louis__prices .price { font-size: 10pt; }
-
-/* ---------- Two-column flowing spirits list (XII–XIV) ---------- */
-.spirits-flow {
   column-count: 2;
-  column-gap: 28pt;
+
+  column-gap: calc(24 * var(--pt));
+
   column-fill: auto;
-  height: 100%;
-  font-size: 10pt;
-  line-height: 1.35;
-}
-.spirits-flow .h-sub {
-  break-after: avoid-column;
-  break-inside: avoid;
-}
-.spirits-flow .row {
-  break-inside: avoid;
+
 }
 
-/* ---------- Page XV — Piano ---------- */
-.piano {
-  height: 100%;
-  position: relative;
-  display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  gap: 10pt;
-  text-align: center;
-}
-.piano__word {
-  text-align: center;
-  margin-top: 8pt;
-}
-.piano__pianists {
+.two-col > * { break-inside: avoid; }
+
+.two-col .wine-list li { break-inside: avoid; }
+
+
+
+/* ---------- Split-word divider (Galipos + Xanh Mono shared baseline) ---------- */
+
+.divider-word {
+
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10pt;
-  margin-top: 6pt;
-}
-.piano__pianist {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.piano__pianist .day {
-  font-family: "Xanh Mono", monospace;
-  font-feature-settings: "smcp" 1;
-  font-variant-caps: all-small-caps;
-  font-size: 10pt;
-  text-decoration: underline;
-  text-underline-offset: 2pt;
-  margin-bottom: 4pt;
-}
-.piano__pianist .name {
-  font-family: "Xanh Mono", monospace;
-  font-style: italic;
-  font-size: 16.4pt;
-  line-height: 1.1;
-}
-.piano__art {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-.piano__art img { width: 180pt; height: auto; }
-.piano__footer {
-  text-align: center;
-  font-family: "Galipos", serif;
-  font-style: italic;
-  font-size: 30pt;
+
+  align-items: baseline;
+
+  justify-content: flex-start;
+
   line-height: 1;
-  padding-bottom: 6pt;
+
+  letter-spacing: 0;
+
 }
 
-/* ---------- Section spacing ---------- */
-.section { margin-bottom: 14pt; }
-.section:last-child { margin-bottom: 0; }
 
-/* ---------- Utilities ---------- */
-.italic { font-style: italic; }
-.small { font-size: 10pt; }
-.center { text-align: center; }
+
+.divider-word .lead {
+
+  font-family: var(--f-mono);
+
+  font-size: calc(58.7 * var(--pt));
+
+  line-height: 1;
+
+  letter-spacing: 0.02em;
+
+  padding-right: calc(14 * var(--pt));
+
+}
+
+
+
+.divider-word .drop {
+
+  font-family: var(--f-display);
+
+  font-style: italic;
+
+  font-size: calc(118 * var(--pt));
+
+  line-height: 1;
+
+  letter-spacing: 0;
+
+}
+
+
+
+.divider-word .tail {
+
+  font-family: var(--f-mono);
+
+  font-size: calc(58.7 * var(--pt));
+
+  line-height: 1;
+
+  letter-spacing: 0.01em;
+
+}
+
+
+
+/* ---------- Cover (page I) ---------- */
+
+.page-cover {
+
+  padding: 0;
+
+  background: var(--paper);
+
+  display: grid;
+
+  place-items: center;
+
+  overflow: hidden;
+
+}
+
+
+
+.cover-ripple {
+
+  position: absolute;
+
+  inset: 0;
+
+  background-image:
+
+    repeating-radial-gradient(
+
+      circle at 50% 50%,
+
+      rgba(17,17,17,0.65) 0,
+
+      rgba(17,17,17,0.65) 0.6px,
+
+      transparent 0.6px,
+
+      transparent 4px
+
+    );
+
+  mix-blend-mode: multiply;
+
+}
+
+
+
+.cover-logo-plate {
+
+  position: relative;
+
+  z-index: 2;
+
+  background: var(--paper);
+
+  padding: calc(22 * var(--pt)) calc(40 * var(--pt));
+
+  border-radius: 4px;
+
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.02);
+
+}
+
+.cover-logo-plate img {
+
+  display: block;
+
+  width: calc(300 * var(--pt));
+
+  max-width: 100%;
+
+  height: auto;
+
+}
+
+
+
+/* ---------- Page II specific ---------- */
+
+.two-up {
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: calc(22 * var(--pt));
+
+}
+
+
+
+.classics-item {
+
+  margin-bottom: calc(9 * var(--pt));
+
+}
+
+.classics-item .hd {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: baseline;
+
+  gap: calc(6 * var(--pt));
+
+}
+
+.classics-item .hd .name {
+
+  font-variant-caps: all-small-caps;
+
+  font-feature-settings: "smcp", "c2sc";
+
+  letter-spacing: 0.03em;
+
+}
+
+.classics-item .ing {
+
+  font-size: calc(10 * var(--pt));
+
+}
+
+
+
+.louis-row {
+
+  display: grid;
+
+  grid-template-columns: 1fr auto;
+
+  align-items: end;
+
+  margin-top: calc(14 * var(--pt));
+
+  gap: calc(8 * var(--pt));
+
+}
+
+.louis-row .label {
+
+  font-family: var(--f-display);
+
+  font-style: italic;
+
+  font-size: calc(30 * var(--pt));
+
+  line-height: 1;
+
+}
+
+.louis-row .tiers {
+
+  display: grid;
+
+  grid-template-columns: repeat(3, auto);
+
+  gap: calc(4 * var(--pt)) calc(22 * var(--pt));
+
+  text-align: center;
+
+  font-size: calc(10 * var(--pt));
+
+}
+
+.louis-row .tiers .h {
+
+  font-variant-caps: all-small-caps;
+
+  font-feature-settings: "smcp", "c2sc";
+
+  letter-spacing: 0.03em;
+
+}
+
+
+
+/* ---------- Page III specific ---------- */
+
+.page-bottle {
+
+  display: grid;
+
+  grid-template-rows: auto 1fr auto;
+
+}
+
+.page-bottle .top-note {
+
+  max-width: calc(160 * var(--pt));
+
+  text-align: left;
+
+}
+
+.page-bottle .art {
+
+  display: grid;
+
+  place-items: center;
+
+  padding: calc(10 * var(--pt)) 0;
+
+}
+
+.page-bottle .art img {
+
+  width: calc(230 * var(--pt));
+
+  height: auto;
+
+}
+
+.page-bottle .divider-word {
+
+  justify-content: flex-start;
+
+  padding-bottom: calc(6 * var(--pt));
+
+}
+
+
+
+/* ---------- Page X specific ---------- */
+
+.page-glass .divider-word {
+
+  margin-top: calc(-6 * var(--pt));
+
+  margin-bottom: calc(10 * var(--pt));
+
+}
+
+.page-glass .art {
+
+  display: grid;
+
+  place-items: center;
+
+  margin: calc(6 * var(--pt)) 0 calc(14 * var(--pt));
+
+}
+
+.page-glass .art img {
+
+  width: calc(260 * var(--pt));
+
+  height: auto;
+
+}
+
+
+
+/* ---------- Page XV (Piano) ---------- */
+
+.page-piano {
+
+  display: grid;
+
+  grid-template-rows: auto 1fr auto;
+
+  text-align: center;
+
+}
+
+.page-piano .divider-word {
+
+  justify-content: center;
+
+  margin-bottom: calc(18 * var(--pt));
+
+}
+
+.pianist {
+
+  margin: calc(16 * var(--pt)) 0;
+
+}
+
+.pianist .day {
+
+  font-family: var(--f-mono);
+
+  font-variant-caps: all-small-caps;
+
+  font-feature-settings: "smcp", "c2sc";
+
+  text-decoration: underline;
+
+  text-underline-offset: 0.18em;
+
+  font-size: calc(10 * var(--pt));
+
+  letter-spacing: 0.04em;
+
+  display: block;
+
+  margin-bottom: calc(4 * var(--pt));
+
+}
+
+.pianist .name {
+
+  font-family: var(--f-mono);
+
+  font-style: italic;
+
+  font-size: calc(16.4 * var(--pt));
+
+  letter-spacing: 0.01em;
+
+}
+
+.page-piano .art {
+
+  display: grid;
+
+  place-items: center;
+
+  margin: calc(10 * var(--pt)) 0;
+
+}
+
+.page-piano .art img {
+
+  width: calc(200 * var(--pt));
+
+  height: auto;
+
+}
+
+.page-piano .closer {
+
+  font-family: var(--f-display);
+
+  font-style: italic;
+
+  font-size: calc(30 * var(--pt));
+
+  line-height: 1;
+
+  margin-bottom: calc(10 * var(--pt));
+
+}
+
+
+
+/* ---------- Back cover (XVI) ---------- */
+
+.page-back { background: var(--paper); }
+
+.page-back .folio { display: none; }
+
+
+
+/* ---------- Utility ---------- */
+
+.stack > * + * { margin-top: calc(10 * var(--pt)); }
+
+.mt-s { margin-top: calc(10 * var(--pt)); }
+
+.mt-m { margin-top: calc(18 * var(--pt)); }
+
+.mt-l { margin-top: calc(28 * var(--pt)); }
+
+
+
+/* ---------- Navigation ---------- */
+
+.top-note-bar {
+
+  position: fixed;
+
+  top: 12px;
+
+  right: 16px;
+
+  z-index: 10;
+
+  color: #ddd;
+
+  font-family: var(--f-mono);
+
+  font-size: 12px;
+
+  opacity: 0.75;
+
+  pointer-events: none;
+
+}
+
