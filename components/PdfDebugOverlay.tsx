@@ -17,7 +17,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const LS_VISIBLE = "stmPdfOverlayVisible";
 const LS_OPACITY = "stmPdfOverlayOpacity";
+const LS_BLEND = "stmPdfOverlayBlend";
 const LS_ENABLED = "stmPdfOverlayEnabled";
+
+type OverlayBlendMode = "normal" | "multiply";
+
+function parseBlend(raw: string | null): OverlayBlendMode {
+  return raw === "multiply" ? "multiply" : "normal";
+}
 
 function pad2(n: number) {
   return n < 10 ? `0${n}` : String(n);
@@ -32,6 +39,7 @@ export function PdfDebugOverlay() {
   const [active, setActive] = useState(false);
   const [visible, setVisible] = useState(true);
   const [opacityPct, setOpacityPct] = useState(55);
+  const [blendMode, setBlendMode] = useState<OverlayBlendMode>("normal");
   const injectedRef = useRef(false);
   const activeRef = useRef(false);
   activeRef.current = active;
@@ -87,6 +95,7 @@ export function PdfDebugOverlay() {
 
     let storedVisible: boolean | null = null;
     let storedOpacity: number | null = null;
+    let storedBlend: OverlayBlendMode | null = null;
     try {
       const v = localStorage.getItem(LS_VISIBLE);
       if (v === "1") storedVisible = true;
@@ -96,12 +105,14 @@ export function PdfDebugOverlay() {
         const parsed = parseInt(o, 10);
         if (!Number.isNaN(parsed)) storedOpacity = Math.max(0, Math.min(100, parsed));
       }
+      storedBlend = parseBlend(localStorage.getItem(LS_BLEND));
     } catch {
       // ignore
     }
 
     if (storedVisible !== null) setVisible(storedVisible);
     if (storedOpacity !== null) setOpacityPct(storedOpacity);
+    if (storedBlend !== null) setBlendMode(storedBlend);
 
     if (injectedRef.current) return;
     injectedRef.current = true;
@@ -142,10 +153,11 @@ export function PdfDebugOverlay() {
       "--stm-pdf-overlay-opacity",
       (opacityPct / 100).toFixed(2),
     );
+    document.documentElement.style.setProperty("--stm-pdf-overlay-mix-blend", blendMode);
     return () => {
       // leave class in place; we only clean up if the overlay is disabled entirely
     };
-  }, [active, visible, opacityPct]);
+  }, [active, visible, opacityPct, blendMode]);
 
   const togglePanel = useCallback(() => {
     setVisible((prev) => {
@@ -170,6 +182,16 @@ export function PdfDebugOverlay() {
     }
   }, []);
 
+  const onBlendChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    const next = parseBlend(e.target.value);
+    setBlendMode(next);
+    try {
+      localStorage.setItem(LS_BLEND, next);
+    } catch {
+      // ignore
+    }
+  }, []);
+
   if (!active) return null;
 
   return (
@@ -183,24 +205,42 @@ export function PdfDebugOverlay() {
         title="Toggle PDF overlay (⌘G)"
         onClick={togglePanel}
       >
-        <span className="zoom-toggle__label">PDF:</span>
+        <span className="zoom-toggle__label">debug overlay</span>
         <span className="zoom-toggle__value" id="stm-pdf-overlay-toggle-value">
           {visible ? "On" : "Off"}
         </span>
       </button>
-      <div className="zoom-toggle pdf-debug-panel__opacity" role="group" aria-label="PDF overlay opacity">
-        <span className="zoom-toggle__label">Opacity</span>
-        <input
-          type="range"
-          id="stm-pdf-debug-opacity"
-          className="pdf-debug-panel__slider"
-          min={0}
-          max={100}
-          step={1}
-          value={opacityPct}
-          onChange={onOpacityInput}
-        />
-      </div>
+      {visible ? (
+        <>
+          <div className="zoom-toggle pdf-debug-panel__opacity" role="group" aria-label="PDF overlay opacity">
+            <span className="zoom-toggle__label">Opacity</span>
+            <input
+              type="range"
+              id="stm-pdf-debug-opacity"
+              className="pdf-debug-panel__slider"
+              min={0}
+              max={100}
+              step={1}
+              value={opacityPct}
+              onChange={onOpacityInput}
+            />
+          </div>
+          <div className="zoom-toggle pdf-debug-panel__blend" role="group" aria-label="PDF overlay blend mode">
+            <label htmlFor="stm-pdf-debug-blend" className="zoom-toggle__label">
+              Blend
+            </label>
+            <select
+              id="stm-pdf-debug-blend"
+              className="pdf-debug-panel__select"
+              value={blendMode}
+              onChange={onBlendChange}
+            >
+              <option value="normal">Normal</option>
+              <option value="multiply">Multiply</option>
+            </select>
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }

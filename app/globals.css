@@ -82,7 +82,7 @@
 
   --ink: #111;
 
-  --paper: #fcfbf7;
+  --paper: #ffffff;
 
   --margin-inside: calc(54 * var(--pt));
 
@@ -214,7 +214,7 @@ html, body {
 
   right: 0;
 
-  bottom: calc(22 * var(--pt));
+  bottom: calc(34 * var(--pt));
 
   text-align: center;
 
@@ -806,7 +806,7 @@ html, body {
 
 .mt-m { margin-top: calc(18 * var(--pt)); }
 
-.mt-l { margin-top: calc(28 * var(--pt)); }
+.mt-l { margin-top: calc(18 * var(--pt)); }
 
 
 
@@ -1136,7 +1136,7 @@ html, body {
 
   left: 16px;
 
-  z-index: 11;
+  z-index: 100;
 
   display: inline-flex;
 
@@ -1200,18 +1200,81 @@ html, body {
 
 }
 
+/* ---------- Export PDF button (floating pill, top-right) ---------- */
+
+.export-pdf {
+  position: fixed;
+  top: 12px;
+  right: 16px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(20, 18, 16, 0.72);
+  color: #eee;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0.8;
+  transition: opacity 120ms ease, background 120ms ease, color 120ms ease;
+}
+
+.export-pdf:hover {
+  opacity: 1;
+  background: rgba(20, 18, 16, 0.88);
+}
+
+.export-pdf:focus-visible {
+  outline: 2px solid #9ab;
+  outline-offset: 2px;
+}
+
+.export-pdf:disabled {
+  cursor: progress;
+  opacity: 0.9;
+}
+
+.export-pdf[data-status="error"] {
+  background: rgba(96, 28, 28, 0.82);
+  border-color: rgba(255, 120, 120, 0.35);
+}
+
+.export-pdf .export-pdf__icon {
+  opacity: 0.8;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.export-pdf .export-pdf__label {
+  font-weight: 500;
+}
+
 /* ---------- Debug overlay (folded in from debug-overlay.css) ---------- */
 
 :root {
   --stm-pdf-overlay-opacity: 0.55;
+  --stm-pdf-overlay-mix-blend: normal;
 }
 
+/* Live layout uses `color: var(--ink)` on body / .page; PDF raster keeps its own colors */
+html.pdf-debug-overlay-on {
+  --ink: magenta;
+}
+
+/* Opacity + mix-blend on one node isolates blending; blend here, fade on the img. */
 .pdf-debug-overlay {
   position: absolute;
   inset: 0;
   z-index: 50;
   pointer-events: none;
   overflow: hidden;
+  mix-blend-mode: var(--stm-pdf-overlay-mix-blend, normal);
 }
 
 .pdf-debug-overlay__img {
@@ -1220,12 +1283,13 @@ html, body {
   height: 100%;
   object-fit: fill;
   opacity: var(--stm-pdf-overlay-opacity);
-  mix-blend-mode: normal;
+  pointer-events: none;
 }
 
 .pdf-debug-overlay__missing {
   position: absolute;
   inset: 0;
+  pointer-events: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1245,7 +1309,7 @@ html:not(.pdf-debug-overlay-on) .pdf-debug-overlay__missing {
   position: fixed;
   top: 12px;
   left: 106px;
-  z-index: 11;
+  z-index: 100;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1278,6 +1342,32 @@ html:not(.pdf-debug-overlay-on) .pdf-debug-overlay__missing {
   cursor: pointer;
 }
 
+.pdf-debug-panel__blend.zoom-toggle {
+  cursor: default;
+  gap: 8px;
+  padding-top: 1px;
+  padding-right: 1px;
+  padding-bottom: 1px;
+}
+
+.pdf-debug-panel__select {
+  margin: 0;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.35);
+  color: #eee;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.pdf-debug-panel__select:focus-visible {
+  outline: 2px solid #9ab;
+  outline-offset: 2px;
+}
+
 @media (max-width: 520px) {
   .pdf-debug-panel {
     left: 16px;
@@ -1307,6 +1397,7 @@ html:not(.pdf-debug-overlay-on) .pdf-debug-overlay__missing {
   /* Hide on-screen chrome so only the pages print */
   .top-note-bar,
   .zoom-toggle,
+  .export-pdf,
   .pdf-debug-overlay,
   .pdf-debug-panel {
     display: none !important;
